@@ -1,0 +1,48 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" controllerName="ClinicalTrials.ClinicalTrials.controller.Favorite" xmlns="sap.m">
+    <Page showHeader="true" title="{i18n&gt;Favorite}" showFooter="true" showNavButton="true" navButtonText="{i18n&gt;Back}" navButtonTap="NavBack" enableScrolling="false">
+        <content>
+            <SearchField placeholder="{i18n&gt;SearchField}" tooltip="{i18n&gt;SearchTTIP}" liveChange="Search" search="Search" showSearchButton="true" visible="true" width="100%" />
+        </content>
+        <ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
+            <content>
+                <List id="polist" width="100%" headerText="" footerText="" backgroundDesign="Solid" showSeparators="All" growing="true" growingThreshold="10" inset="false" growingTriggerText="" showNoData="true" growingScrollToLoad="false" visible="true" items="{/modelData/0/results}" mode="MultiSelect">
+                    <infoToolbar>
+                        <Toolbar width="100%" height="auto" design="Auto" visible="false" enabled="true">
+                            <content>
+                                <Label text="Label" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true" />
+                            </content>
+                        </Toolbar>
+                    </infoToolbar>
+                    <items>
+                        <ObjectListItem intro="{study_first_posted/_}" icon="{path: 'study_first_posted/_',           formatter: 'ClinicalTrials.ClinicalTrials.controller.Formatter.intro'                                                 }" title="{brief_title}" iconDensityAware="false" type="Active" selected="false" showMarkers="false" press="handleOnPress">
+                            <attributes>
+                                <ObjectAttribute text="{id_info/nct_id}" active="false" visible="true" />
+                                <ObjectAttribute text="{eligibility/minimum_age}" active="false" visible="true" />
+                            </attributes>
+                            <firstStatus>
+                                <ObjectStatus text="{overall_status}" state="{                                                     path: 'overall_status',                                                     formatter: 'ClinicalTrials.ClinicalTrials.controller.Formatter.status'                                                 }" visible="true" icon="{path: 'sponsors/lead_sponsor/agency',           formatter: 'ClinicalTrials.ClinicalTrials.controller.Formatter.sponsor'                                                 }" />
+                            </firstStatus>
+                            <secondStatus>
+                                <ObjectStatus text="" state="None" icon="{path: 'eligibility/gender',           formatter: 'ClinicalTrials.ClinicalTrials.controller.Formatter.gender'                                                 }" visible="true" />
+                            </secondStatus>
+							<markers>
+								<ObjectMarker type="{path: 'id_info/nct_id',formatter: 'ClinicalTrials.ClinicalTrials.controller.Formatter.marker'                                                 }" />
+							</markers>
+                        </ObjectListItem>
+                    </items>
+                </List>
+            </content>
+        </ScrollContainer>
+        <headerContent />
+        <footer>
+            <Bar>
+                <contentRight>
+                    <Button text="{i18n&gt;Delete}" type="Accept" icon="sap-icon://unfavorite" tooltip="{i18n&gt;Delete}" press="deleteNCTOnPress" />
+                    <Button text="{i18n&gt;Clear}" icon="sap-icon://sys-cancel" tooltip="{i18n&gt;Clear}" press="clearNCTOnPress" />
+                </contentRight>
+            </Bar>
+        </footer>
+        <subHeader />
+        <customHeader />
+    </Page>
+</mvc:View>
