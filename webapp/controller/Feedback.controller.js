@@ -141,8 +141,8 @@ sap.ui.define([
 		
         onButtonPress: function(oEvent) {
         	
-            if (localStorage.getItem("pos") != null) {
-	            var pos = localStorage.getItem("pos").split(";");
+            if (window.sessionStorage.getItem("pos") != null) {
+	            var pos = window.sessionStorage.getItem("pos").split(";");
 	        	var lat = pos[0];
 	        	var lng = pos[1];
 	        	
