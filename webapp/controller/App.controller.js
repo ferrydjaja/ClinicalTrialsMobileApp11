@@ -6,43 +6,70 @@ sap.ui.define([
     return Controller.extend("ClinicalTrials.ClinicalTrials.controller.App", {
     	
     	onInit: function() {
-    		var watchID = null;
+			var showmsg = false;
+
+			this.checkGPS();
+			document.addEventListener("online", this.appOnline.bind(this),false);
+
     		var options = { enableHighAccuracy: true };
-    		
-    		// Wait for Cordova to load      
+
+			var watchID = null;
 			document.addEventListener("deviceready", onDeviceReady, false);
-			// Cordova is ready
 			function onDeviceReady() {
-				localStorage.setItem("pos", ';');
-				watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
+
+				if (navigator.geolocation) {
+					if(window.navigator.onLine)
+						watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
+				}
 				
 				document.addEventListener("pause", onPause, false);
 				document.addEventListener("resume", onResume, false);
 			}
-			// onSuccess Geolocation       
+     
 			function onSuccess(position) {
+				if(!showmsg) {
+					showmsg = true;
+					sap.m.MessageToast.show('GPS signal is available now', {
+					});
+				}
+
 				console.log(position.coords.latitude + ';' + position.coords.longitude);
-				localStorage.setItem("pos", position.coords.latitude + ';' + position.coords.longitude);				
+				window.sessionStorage.setItem("pos", position.coords.latitude + ';' + position.coords.longitude);				
 			}
-			// onError Callback receives a PositionError object    
+
 			function onError(error) {
-				console.log('code: ' + error.code + '\n' +
-				'message: ' + error.message + '\n');
-			}
-			
-			this.checkGPS();
-			document.addEventListener("online", this.appOnline.bind(this),false);
-			
+				showmsg = false;
+				console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
+			}			
+						
 			function onPause() {
-			    if (watchID != null) {
-					navigator.geolocation.clearWatch(watchID);
-					watchID = null;
+				showmsg = false;
+			    if (navigator.geolocation) {
+					if (watchID != null) {
+						navigator.geolocation.clearWatch(watchID);
+						watchID = null;
+					}
 				}
 			}
 			
+
 			function onResume() {
-			    localStorage.setItem("pos", ';');
-				watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
+				showmsg = false;
+				if (navigator.geolocation) {	
+					
+					if(window.navigator.onLine) {
+						watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
+
+						if (window.sessionStorage.getItem("pos") == null) {
+
+							 var geo_options = {
+								enableHighAccuracy : true
+							};
+
+							navigator.geolocation.getCurrentPosition(onSuccess, onError, geo_options);
+						} 
+					}
+				}
 			}
 			
     	},
