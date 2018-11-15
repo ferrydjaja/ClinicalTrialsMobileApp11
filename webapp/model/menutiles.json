@@ -14,9 +14,9 @@
     },
     {
       "image" : "images/menu3.png",
-      "contenttext" : "Chat",
-      "subheader" : "Chat with us",
-      "footer": "Chatbot"
+      "contenttext" : "Contact",
+      "subheader" : "Contact Us",
+      "footer": "Contact Us"
     }
   ]
 }
